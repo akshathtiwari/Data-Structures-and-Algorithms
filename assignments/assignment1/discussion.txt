@@ -1,0 +1,28 @@
+1. Used snake case for any method which was not explicitly mentioned in the implementation
+2. Used snake case for any function
+3. I have assumed that input params cant be modified and followed the exact param mentioned for a given method in implementation
+
+
+Delete the last node and insert at last - write on approach
+
+#problem 1
+
+If I had to use my own operation of delete for example then the time complexity would be cubic as we would have 2 loops (outer and inner)
+in dedup function and then delete it self is O(n) making it O(n^3). 
+
+
+
+Implemented all the insert logic with insertatend which calls the count length function that is O(n)
+
+For part #2
+
+First thing, its not explicitly states to produce a sorted unique list but its probably safe to infer from the output of the example
+mentioned in the problem 2, output was in sorted unique order also the problem does hint about a precondition "where the nodes were added in sorted order without duplicates"
+it is enough for me to decide to write a solution for unique sorted DLL.
+
+I am tempted to use additonal 2 pointer instead of already written method (insertAtend) that will make my complexity O(n^2)
+with another 2 pointers 1 pointing at the start of the new DLL and the other to traverse; this can give me O(n+m), taking inspiration
+from the leetcode problems I once used to solve. I am also tempted because the example talks about sorted DLL which suits the pointer approach.
+neverthless there is another way which seems more suitable for this assignment which is maintaining a tail or maintaing length. Or maybe I can do both
+because it would just take additional constant space and constant operation.
+Both the approaches would not hurt my time complexity if I would wanted a sorted DLL which again bolster the inference I made about the problem #2
