@@ -1,28 +1,61 @@
+Doubly Linked List - Discussion and Analysis
+
+Conventions and assumptions:
 1. Used snake case for any method which was not explicitly mentioned in the implementation
 2. Used snake case for any function
 3. I have assumed that input params cant be modified and followed the exact param mentioned for a given method in implementation
+4. I have implemented the entire solution considering the pos starts from 0 (0 based positioning), the sample file on linked list used 1 as starting position.
 
 
-Delete the last node and insert at last - write on approach
+Part 1: Implementation and analysis
+-----------------------------------
+
+insert(data, pos)
+
+First create the node.
+Check if the insert needs to happen at the start. There could be 2 scenarios one that dll is empty and second that dll is non empty. for both cases complexity is O(1). In my solution append at end is O(1) as I maintained lenght and tail both. At various places I have given my best attempt to ensure we dont run out of index. Also only place where we traverse is when we have pos in middle somewhere in the dll. 
+
+
+delete(pos)
+
+we will check if the delete needs to happen at the start. Again 2 scenarios inside that, first if there is only 1 element in the dll and the second one when there are more than 1. For both these scenarios the complexity is O(1), there is no traversal required. Delete at end is also handled in O(1) way courtesy to the tail and length which we are maintaining in our solution throughout. we only traverse when we have pos in middle in the dll here the complexity is O(n)
+
+search(val) and traverse
+
+Both use same logic, for search we just stop once we find the same val, i.e. we return the pos of the first found val. If the val is not there at all I return -1, which cannot be confused with a real answer since the pos starts at 0. traverse loops till the end and prints all the elements
+
+Both are O(n) - linear
+
+Part 2: Usage
+-------------
 
 #problem 1
 
-If I had to use my own operation of delete for example then the time complexity would be cubic as we would have 2 loops (outer and inner)
-in dedup function and then delete it self is O(n) making it O(n^3). 
+If I had to use my own operation of delete for example then the time complexity would be cubic as we have 2 loops (outer and inner)
+in dedup function and then delete it self is O(n) making the complexity O(n^3).
+Instead I have written a 2 pointer logic which is also qudratic O(n^2). In the 2 pointer logic, there are 2 loops running inner and outer. Inner loop iterates using pointer t2 over all the other elements of the dll from the next element from the fixed one (t1) in the outer loop. The idea is simple t2 runs over all the other elements after t1 and delinks only the ones that match t1. t1 is the one that survives which is why the first occurrence keeps its place and the output comes out as 3 -> 1 -> 2 -> 5.
+Using a hash set would make it O(n) but that is extra space and a language specific structure and also it seems not suitable for the nature of this assignment
 
-
-
-Implemented all the insert logic with insertatend which calls the count length function that is O(n)
-
-For part #2
+#problem 2
 
 First thing, its not explicitly states to produce a sorted unique list but its probably safe to infer from the output of the example
-mentioned in the problem 2, output was in sorted unique order also the problem does hint about a precondition "where the nodes were added in sorted order without duplicates"
-it is enough for me to decide to write a solution for unique sorted DLL.
+mentioned in the problem 2, output was in sorted unique order also the problem does hint about a precondition "where the nodes were added in sorted order without duplicates" it is enough for me to decide to write a solution for unique sorted DLL.
 
-I am tempted to use additonal 2 pointer instead of already written method (insertAtend) that will make my complexity O(n^2)
-with another 2 pointers 1 pointing at the start of the new DLL and the other to traverse; this can give me O(n+m), taking inspiration
-from the leetcode problems I once used to solve. I am also tempted because the example talks about sorted DLL which suits the pointer approach.
-neverthless there is another way which seems more suitable for this assignment which is maintaining a tail or maintaing length. Or maybe I can do both
-because it would just take additional constant space and constant operation.
-Both the approaches would not hurt my time complexity if I would wanted a sorted DLL which again bolster the inference I made about the problem #2
+t1 and t2 are the pointers pointing at the head of each, the smaller value gets appended and only that pointer moves, and when both are equal I take from t1 but update both the pointer. Any list which is left can appended as is as its sorted. I was tempted to carry a third pointer t3 at the end of the new dll and wire every node in by hand the way I would
+do in solving leetcode styled probelm, but insertAtEnd is already O(1) by then so t3 saves a method call and nothing else, and duplicating the head, tail and length maintenance that insert already does correctly is exactly where a bug would hide. Neither input list is modified, I only read the data and build new nodes, which is why the extra space here is O(n+m). Overall time complexity is O(m+n)
+
+
+Worst case time complexity, n is the length of the list
+
+insert(data, pos)        O(n)    
+delete(pos)              O(n)    
+traverse()               O(n)
+search(val)              O(n)    
+insertAtBeginning(data)  O(1)    
+insertAtEnd(data)        O(1)    
+deleteAtBeginning()      O(1)    
+deleteAtEnd()            O(1)
+dedup()                  O(n^2) 
+unique_sorted(a, b)      O(n+m)  
+
+Extra space is O(1) everywhere except unique_sorted which is O(n+m).
